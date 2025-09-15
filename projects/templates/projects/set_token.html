@@ -1,0 +1,13 @@
+<!-- projects/set_token.html -->
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Enter your ClickUp token</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Token</button>
+</form>
+
+{% endblock %}
