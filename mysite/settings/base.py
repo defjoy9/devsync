@@ -183,4 +183,4 @@ WAGTAILADMIN_BASE_URL = "http://example.com"
 WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = './home/home_page.html'
+LOGIN_REDIRECT_URL = '/'

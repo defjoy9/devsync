@@ -1,3 +1,4 @@
+# home/models.py
 from django.db import models
 from django.shortcuts import render
 from wagtail.models import Page
