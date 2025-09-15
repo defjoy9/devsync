@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Notes Graph</h2>
+<div id="graph" style="height: 700px; border:1px solid #ddd;"></div>
+
+<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>
+<script>
+async function loadGraph() {
+    const res = await fetch("{% url 'notes:graph_api' %}");
+    const data = await res.json();
+
+    // nodes with hover titles showing linked nodes
+    const nodes = new vis.DataSet(data.nodes.map(n => {
+        const linkedTitles = data.edges
+            .filter(e => e.from === n.id)
+            .map(e => {
+                const targetNode = data.nodes.find(nd => nd.id === e.to);
+                return targetNode ? targetNode.label : '';
+            });
+        return {
+            ...n,
+            title: linkedTitles.length ? "Links to: " + linkedTitles.join(", ") : "No links",
+            color: { background: '#97C2FC', border: '#2B7CE9' }
+        };
+    }));
+
+    const edges = new vis.DataSet(data.edges);
+
+    const container = document.getElementById('graph');
+    const network = new vis.Network(container, { nodes, edges }, {
+        nodes: { shape: 'dot', size: 14 },
+        edges: { smooth: true },
+        physics: false,
+        interaction: { hover: true, multiselect: false }
+    });
+
+    // Redirect on double click
+    network.on("doubleClick", function(params) {
+        if (params.nodes.length) {
+            const node = nodes.get(params.nodes[0]);
+            if (node && node.url) window.location.href = node.url;
+        }
+    });
+
+    // Animate node color on hover
+    network.on("hoverNode", function(params) {
+        const nodeId = params.node;
+        nodes.update({ id: nodeId, color: { background: 'orange', border: 'darkorange' } });
+    });
+    network.on("blurNode", function(params) {
+        const nodeId = params.node;
+        nodes.update({ id: nodeId, color: { background: '#97C2FC', border: '#2B7CE9' } });
+    });
+}
+
+loadGraph();
+</script>
+{% endblock %}

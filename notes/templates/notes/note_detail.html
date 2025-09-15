@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="note">
+  <h1>{{ note.title }}</h1>
+  <div class="note-body">{{ html|safe }}</div>
+  <hr/>
+  <p><a href="{% url 'notes:graph_page' %}">Back to graph</a></p>
+  <h3>Links:</h3>
+  <ul>
+  {% for linked in note.links.all %}
+    <li><a href="{% url 'notes:note_detail' linked.slug %}">{{ linked.title }}</a></li>
+  {% empty %}
+    <li>No links</li>
+  {% endfor %}
+  </ul>
+</article>
+{% endblock %}

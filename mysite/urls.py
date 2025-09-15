@@ -15,14 +15,13 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
-    path('projects/', include('projects.urls', namespace='projects')),
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
     path('projects/', include('projects.urls', namespace='projects')),
+    path('notes/', include('notes.urls', namespace='notes')),
 ]
-
 
 if settings.DEBUG:
     from django.conf.urls.static import static
