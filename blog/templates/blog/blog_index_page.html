@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+    <h1>This is a Blog HomePage</h1>
+    {% if blogposts %}
+        {% for blogpost in blogposts %}
+            <h2><a href="{{ blogpost.url }}">{{ blogpost.title }}</a></h2>
+            <div>{{ blogpost.intro|richtext }}</div>
+            <a href="{{ blogpost.url }}">Read More...</a>
+        {% endfor %}
+    {% else %}
+        <h2>No Posts Avaiable</h2>
+    {% endif %}
+{% endblock %}
