@@ -16,11 +16,13 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path("django-admin/", admin.site.urls),
-    path("admin/", include(wagtailadmin_urls)),
-    path("documents/", include(wagtaildocs_urls)),
+    path('blog/', include('blog.urls', namespace='blog')),
     path("search/", search_views.search, name="search"),
     path('projects/', include('projects.urls', namespace='projects')),
     path('notes/', include('notes.urls', namespace='notes')),
+    path("admin/", include(wagtailadmin_urls)),
+    path("documents/", include(wagtaildocs_urls)),
+    path('', include(wagtail_urls)),
 ]
 
 if settings.DEBUG:

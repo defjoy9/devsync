@@ -7,9 +7,44 @@
 
 
     <h1>{{ page.title }}</h1>
+    <p>
+        By: 
+        {% if page.author %}
+            {{ page.author.username }}
+        {% else %}
+            Anonymous
+        {% endif %}
+    </p>
     <div>{{ page.intro|richtext }}</div>
     <div>{{ page.body|richtext }}</div>
 
+    <h2>Comments</h2>
+    <div class="comments">
+        {% for comment in page.comments.all %}
+           <p>
+                {% if comment.user %}
+                    {{ comment.user.username }}
+                {% else %}
+                    Anonymous
+                {% endif %}
+                {{ comment.content }}
+            </p>
+            <small>{{ comment.created_at }}</small>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div>
+
+    <h3>Add a comment</h3>
+    {% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    {% else %}
+    <p><a href="{% url 'login' %}">Login</a> to comment.</p>
+    {% endif %}
 
 
     
